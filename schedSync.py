@@ -95,8 +95,9 @@ def logout():
 
 @app.route('/request', methods=['POST'])
 def add_json():
-    jsondata = request.form['jsondata']
-    strForm = json.loads(jsondata)
+    #jsondata = request.form['jsondata']
+    jsondata = request.data
+    strForm = flask.json.loads(jsondata)
     add_entry("jsontest",strForm)
 
 if __name__ == '__main__':
