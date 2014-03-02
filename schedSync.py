@@ -62,7 +62,6 @@ def add_entry():
     flash('New entry was successfully posted')
     return redirect(url_for('show_entries'))
 
-@app.route('/add', methods=['POST'])
 def add_entry(name, sched):
     if not session.get('logged_in'):
         abort(401)
