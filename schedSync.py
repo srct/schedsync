@@ -1,7 +1,7 @@
 # all the imports
 import sqlite3, os
 from flask import Flask, request, session, g, redirect, url_for, abort, \
-     render_template, flash
+     render_template, flash, json
 
 # create our little application :)
 app = Flask(__name__)
@@ -62,6 +62,18 @@ def add_entry():
     flash('New entry was successfully posted')
     return redirect(url_for('show_entries'))
 
+@app.route('/add', methods=['POST'])
+def add_entry(name, sched):
+    if not session.get('logged_in'):
+        abort(401)
+    db = get_db()
+    db.execute('insert into entries (title, text) values (?, ?)',
+                 [name,sched])
+    db.commit()
+    flash('New entry was successfully posted')
+    return redirect(url_for('show_entries'))
+
+
 @app.route('/login', methods=['GET', 'POST'])
 def login():
     error = None
@@ -81,6 +93,12 @@ def logout():
     session.pop('logged_in', None)
     flash('You were logged out')
     return redirect(url_for('show_entries'))
+
+@app.route('/request', methods=['POST'])
+def add_json():
+    jsondata = request.form['jsondata']
+    strForm = json.loads(jsondata)
+    add_entry("jsontest",strForm)
 
 if __name__ == '__main__':
     app.run()
