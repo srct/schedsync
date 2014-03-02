@@ -92,8 +92,8 @@ def logout():
 
 @app.route('/request', methods=['GET','POST'])
 def add_json():
-    #jsondata = request.data
-    jsondata = json.dumps(request)
+    jsondata = request.data
+    #jsondata = json.dumps(request)
     print jsondata
 
     db = get_db()
