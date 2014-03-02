@@ -1,8 +1,6 @@
-# all the imports
 import sqlite3, os
 from flask import Flask, request, session, g, redirect, url_for, abort, render_template, flash, json, jsonify
 
-# create our little application :)
 app = Flask(__name__)
 app.config.from_object(__name__)
 
@@ -57,8 +55,6 @@ def add_entry():
     db = get_db()
     db.execute('insert into entries (title, text) values (?, ?)',
                  [request.form['title'], request.form['text']])
-    #db.execute('insert into entries (title, text) values (?, ?)',
-    #             ["crazyidea", "reallycrazy"])
     db.commit()
     flash('New entry was successfully posted')
     return redirect(url_for('show_entries'))
@@ -96,19 +92,10 @@ def logout():
 
 @app.route('/request', methods=['GET','POST'])
 def add_json():
-    #print "test"
-    #return "test"
-    #jsondata = request.form['jsondata']
     jsondata = request.data
     print jsondata
-    #jsondata = request.get_json()
-    #strForm = json.loads(jsondata)
-    #print strForm
-    #return strForm
-    #add_entry("jsontest","json??")
+
     db = get_db()
-    #db.execute('insert into entries (title, text) values (?, ?)',
-    #             [request.form['title'], request.form['text']])
     db.execute('insert into entries (title, text) values (?, ?)',
                  [jsondata, jsondata])
     db.commit()
